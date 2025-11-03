@@ -1,2 +1,2 @@
 # Coding-Assignment-Verion-15
-ONLY For Coding Assignments To Submit 
+ONLY For Coding Assignments
