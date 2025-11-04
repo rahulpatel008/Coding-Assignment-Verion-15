@@ -1,0 +1,42 @@
+<div class="dynamic-form">
+  <h2 *ngIf="schema.title">{{ schema.title }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <ng-container *ngFor="let field of visibleFields">
+
+      <div class="form-row" *ngIf="!field.hidden">
+        <label [for]="field.name">{{ field.label }} <span *ngIf="field.required">*</span></label>
+
+        <!-- Text / single-line -->
+        <input *ngIf="field.type === 'text'" [id]="field.name" [formControlName]="field.name" [readonly]="field.readonly ?? false"  />
+
+        <!-- Textarea -->
+        <textarea *ngIf="field.type === 'textarea'" [id]="field.name" [formControlName]="field.name" [readonly]="field.readonly ?? false" ></textarea>
+
+        <!-- Date -->
+        <input *ngIf="field.type === 'date'" type="date" [id]="field.name" [formControlName]="field.name" />
+
+        <!-- Dropdown single select -->
+        <select *ngIf="field.type === 'dropdown'" [id]="field.name" [formControlName]="field.name">
+          <option value="">--Select--</option>
+          <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+        </select>
+
+        <!-- Multiselect (native) -->
+        <select *ngIf="field.type === 'multiselect'" [id]="field.name" [formControlName]="field.name" multiple>
+          <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+        </select>
+
+        <!-- Checkbox -->
+        <input *ngIf="field.type === 'checkbox'" type="checkbox" [id]="field.name" [formControlName]="field.name" />
+
+        <div class="error" *ngIf="getErrorMessage(field)">{{ getErrorMessage(field) }}</div>
+      </div>
+
+    </ng-container>
+
+    <div class="form-actions">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>

@@ -1,24 +1,20 @@
-<p>This Is Main Component</p>
+<div style="text-align:center; margin: 20px;">
+  <h1>{{ currentSchema.title }}</h1>
 
-<div style="padding: 20px">
-<!-- <section>
-<app-dynamic-form [schema]="userRegistrationSchema" (submitted)="onFormSubmit($event)"></app-dynamic-form>
-</section> -->
+  <div style="margin-bottom: 20px;">
+    <button (click)="switchSchema('user')">User Registration Form</button>
+    <button (click)="switchSchema('feedback')">Feedback Form</button>
+  </div>
 
+  <app-dynamic-form
+    [schema]="currentSchema"
+    (submitted)="onFormSubmit($event)">
+  </app-dynamic-form>
 
-<hr />
+  <hr />
 
-
-<!-- <section style="margin-top: 20px;">
-<app-dynamic-form [schema]="feedbackSchema" (submitted)="onFormSubmit($event)"></app-dynamic-form>
-</section> -->
-
-
-<hr />
-
-
-<!-- <section *ngIf="lastOutput" style="margin-top: 20px;">
-<h3>Last submitted JSON</h3>
-<pre>{{ lastOutput | json }}</pre>
-</section> -->
+  <div *ngIf="lastOutput">
+    <h3>Submitted Data:</h3>
+    <pre>{{ lastOutput | json }}</pre>
+  </div>
 </div>
