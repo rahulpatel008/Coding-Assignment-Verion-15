@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { FieldSchema, FormSchema } from './dynamic-form.model';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FieldSchema, FormSchema } from '../../models/dynamic-form.model';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -8,13 +8,17 @@ import { FieldSchema, FormSchema } from './dynamic-form.model';
   styleUrls: ['./dynamic-form.component.scss']
 })
 export class DynamicFormComponent implements OnChanges {
-  @Input() schema!: FormSchema;
+
+  @Input() schema!: FormSchema | null;
+
+
   @Output() submitted = new EventEmitter<any>();
 
   form!: FormGroup;
   visibleFields: FieldSchema[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['schema']) {
@@ -22,26 +26,34 @@ export class DynamicFormComponent implements OnChanges {
     }
   }
 
+
   private buildForm() {
-    const group: { [key: string]: any } = {};
+    const group: { [key: string]: FormControl } = {};
     this.visibleFields = [];
 
+    if (!this.schema || !Array.isArray(this.schema.fields)) {
+      this.form = this.fb.group({});
+      return;
+    }
+
     for (const field of this.schema.fields) {
+
       this.visibleFields.push(field);
 
       const validators = [];
       if (field.required) validators.push(Validators.required);
-      if (field.validation?.pattern) {
-        validators.push(Validators.pattern(new RegExp(field.validation.pattern)));
-      }
+      if (field.validation?.pattern) validators.push(Validators.pattern(new RegExp(field.validation.pattern)));
 
-      // default value for checkbox is false, for multiselect []
-      let defaultValue: any = null;
-      if (field.type === 'checkbox') defaultValue = false;
-      if (field.type === 'multiselect') defaultValue = [];
+      let defaultValue: any = field.value ?? '';
+      if (field.type === 'checkbox') defaultValue = !!field.value;
+      if (field.type === 'multiselect') defaultValue = field.value ?? [];
 
-      const control = new FormControl({ value: defaultValue, disabled: !!field.disabled }, validators);
-      if (field.readonly) control.disable();
+
+      const controlConfig: any = field.disabled ? { value: defaultValue, disabled: true } : defaultValue;
+      const control = new FormControl(controlConfig, validators);
+
+
+      if (field.readonly) { }
 
       group[field.name] = control;
     }
@@ -49,7 +61,8 @@ export class DynamicFormComponent implements OnChanges {
     this.form = this.fb.group(group);
   }
 
-  getErrorMessage(field: FieldSchema) {
+
+  getErrorMessage(field: FieldSchema): string | null {
     const control = this.form.get(field.name);
     if (!control || !control.touched || !control.errors) return null;
 
@@ -59,18 +72,12 @@ export class DynamicFormComponent implements OnChanges {
     return 'Invalid value';
   }
 
+
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-
-    const value = this.form.getRawValue();
-    this.submitted.emit(value);
-  }
-
-  // convenience for template
-  asArray(o: any) {
-    return Array.isArray(o) ? o : [];
+    this.submitted.emit(this.form.getRawValue());
   }
 }

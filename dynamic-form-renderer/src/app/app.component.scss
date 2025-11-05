@@ -1,0 +1,46 @@
+.main {
+  padding: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+
+  .headingTitle {
+    text-align: center
+  }
+
+  .schemaBtn {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .loading {
+    text-align: center;
+    margin: 12px;
+  }
+
+  .errorMessage {
+    color: #b00020;
+    text-align: center;
+  }
+
+  .outputSubmission {
+    margin-top: 20px;
+    padding: 12px;
+    border: 1px dashed #ddd;
+  }
+}
+
+
+
+
+button {
+  margin-right: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f0f0f0;
+}

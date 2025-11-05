@@ -1,0 +1,43 @@
+{
+  "title": "Feedback Form",
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "label": "Email",
+      "name": "email",
+      "type": "text",
+      "validation": {
+        "pattern": "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+        "message": "Invalid email address"
+      }
+    },
+    {
+      "label": "Rating",
+      "name": "rating",
+      "type": "dropdown",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "required": true
+    },
+    {
+      "label": "Would recommend",
+      "name": "recommend",
+      "type": "checkbox"
+    },
+    {
+      "label": "Comments",
+      "name": "comments",
+      "type": "textarea"
+    }
+  ]
+}

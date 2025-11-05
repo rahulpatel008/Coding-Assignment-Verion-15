@@ -1,20 +1,22 @@
-<div style="text-align:center; margin: 20px;">
-  <h1>{{ currentSchema.title }}</h1>
+<div class="main">
+  <h1 class="headingTitle">Dynamic Form Renderer</h1>
 
-  <div style="margin-bottom: 20px;">
-    <button (click)="switchSchema('user')">User Registration Form</button>
-    <button (click)="switchSchema('feedback')">Feedback Form</button>
+  <div class="schemaBtn">
+    <button (click)="loadSchema('user-registration')">User Registration</button>
+    <button (click)="loadSchema('feedback')">Feedback</button>
   </div>
 
+  <div class="loading" *ngIf="loading">Loading schema...</div>
+  <div class="errorMessage" *ngIf="errorMessage">{{ errorMessage }}</div>
+
   <app-dynamic-form
+    *ngIf="currentSchema"
     [schema]="currentSchema"
     (submitted)="onFormSubmit($event)">
   </app-dynamic-form>
 
-  <hr />
-
-  <div *ngIf="lastOutput">
-    <h3>Submitted Data:</h3>
+  <div class="outputSubmission" *ngIf="lastOutput">
+    <h3>Submitted JSON</h3>
     <pre>{{ lastOutput | json }}</pre>
   </div>
 </div>
