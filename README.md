@@ -2,24 +2,23 @@
 
 ## ⚙️ Steps to Run the Application
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Requirements:
+- Angular CLI 15
+- Node 16.x
+- npm 8.x
 
-2. **Start the application**
-   ```bash
-   ng serve
-   ```
-   Then open 👉 **http://localhost:4200**
+Install & Run:
+1. npm install
+2. ng serve
+3. Open 👉 **http://localhost:4200**
 
-3. **Run unit tests**
-   ```bash
-   ng test
-   ```
-   (Coverage report: `coverage/dynamic-form-renderer/index.html`)
+What it does:
+- Loads form schema JSON from `assets/schemas/*.json` via HttpClient (simulates fake API)
+- Renders dynamic forms from JSON schema
+- Applies validation & displays messages
+- Sets disabled state at control creation to avoid Angular warnings
+- Two schemas available: user-registration.json and feedback.json (use top buttons to switch)
 
----
 
 ## 🧠 JSON Schema Format
 
@@ -97,3 +96,4 @@ When a user submits the form, the output is shown on screen and logged in consol
 
 ✅ **Summary:**  
 This project renders reusable dynamic forms from JSON, supports validation, readonly/disabled/hidden fields, and uses Angular Reactive Forms with API-driven schemas.
+
